@@ -8,58 +8,48 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
-    private EditText etfirst, etsecond;
-    private Button btcalculate;
-    private RadioButton rdosum, rdosub;
+
+    Button calculate;
+    EditText num1,num2;
+    RadioButton rdAdd, rdSub, rdMul, rdDiv;
+    TextView tvResult;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        num1= findViewById(R.id.etFirst);
+        num2= findViewById(R.id.etSecond);
+        rdAdd= findViewById(R.id.rdAdd);
+        rdSub= findViewById(R.id.rdSub);
+        calculate= findViewById(R.id.btnCalculate);
+        calculate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int first,second,result;
+                first=Integer.parseInt(num1.getText().toString());
+                second=Integer.parseInt(num2.getText().toString());
+                if(rdAdd.isChecked()){
+                    calc cal=new calc(first,second);
+                    result=cal.add();
 
-        etfirst = findViewById(R.id.etfirst);
-        etsecond = findViewById(R.id.etsecond);
-        btcalculate = findViewById(R.id.btcalculate);
-        rdosum = findViewById(R.id.rdosum);
-        rdosub = findViewById(R.id.rdosub);
-
-    }
-
-    private boolean validation() {
-        boolean flag = true;
-        if (TextUtils.isEmpty(etfirst.getText().toString())) {
-
-            etfirst.setError("enter first number");
-            etfirst.requestFocus();
-            flag = false;
-        } else if (TextUtils.isEmpty(etsecond.getText().toString())) {
-            etsecond.setError("enter second number");
-        }
-        return flag;
-    }
+                    Toast.makeText(MainActivity.this, "total sum is"+result, Toast.LENGTH_LONG).show();
+                }else if  (rdSub.isChecked()){
+                    calc cal=new calc(first,second);
+                    result=cal.sub();
+                    Toast.makeText(MainActivity.this, "total subtraction is"+result, Toast.LENGTH_LONG).show();
 
 
-    @Override
-    public void OnView(View V) {
+                }
 
-        int first, second, result;
-        if (validation()) {
 
-            first = Integer.parseInt((etfirst.getText().toString()));
-            second = Integer.parseInt((etsecond.getText().toString()));
-            if (V.getId()==R.id.btcalculate){
-
-            if (rdosum.isChecked()) {
-                result = first + second;
-            } else {
-                result = first - second;
             }
-            Toast.makeText(MainActivity.this, "Result is :"+result, Toast.LENGTH_SHORT).show();
-         }
-    }
+
+        });
     }
 }
